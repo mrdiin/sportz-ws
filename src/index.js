@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import http from 'http';
+import { securityMiddleware } from './arcjet.js';
 import { matchRouter } from './routes/matches.js';
 import { attachWebSocketServer } from './ws/server.js';
 
@@ -17,6 +18,8 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to the Sportz API from ' + req.ip + ' !' });
 });
+
+app.use(securityMiddleware());
 
 app.use('/api/v1/matches', matchRouter);
 
