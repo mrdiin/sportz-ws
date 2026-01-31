@@ -51,6 +51,14 @@ matchRouter.post('/', async (req, res) => {
       })
       .returning();
 
+    if (res.app.locals.broadcastMatchCreated) {
+      try {
+        res.app.locals.broadcastMatchCreated(event);
+      } catch (broadcastError) {
+        console.error('Failed to broadcast match_created event', broadcastError);
+      }
+    }
+
     res.status(StatusCodes.CREATED).json({ data: event });
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Internal server error', details: error.message });
