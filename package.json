@@ -1,7 +1,8 @@
 {
   "name": "ws-sportz",
   "version": "1.0.0",
-  "description": "",
+  "author": "https://github.com/mrdiin",
+  "description": "Backend for Sportz - Live Score App",
   "main": "src/index.js",
   "scripts": {
     "dev": "nodemon src/index.js",
@@ -12,16 +13,17 @@
     "db:demo": "tsx src/db/db-demo.js"
   },
   "keywords": [],
-  "author": "",
   "license": "ISC",
   "type": "module",
   "dependencies": {
     "dotenv": "^17.2.3",
     "drizzle-orm": "^0.45.1",
     "express": "^5.2.1",
+    "http-status-codes": "^2.3.0",
     "nodemon": "^3.1.11",
     "pg": "^8.18.0",
-    "ws": "^8.19.0"
+    "ws": "^8.19.0",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "drizzle-kit": "^0.31.8",

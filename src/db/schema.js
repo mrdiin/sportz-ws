@@ -19,7 +19,7 @@ export const matches = pgTable('matches', {
   endTime: timestamp('end_time'),
   homeScore: integer('home_score').default(0).notNull(),
   awayScore: integer('away_score').default(0).notNull(),
-  createdAt: timestamp('created_at').defaultNow().notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull()
 });
 
 /**
@@ -40,5 +40,5 @@ export const commentary = pgTable('commentary', {
   message: text('message').notNull(),
   metadata: jsonb('metadata'),
   tags: text('tags'),
-  createdAt: timestamp('created_at').defaultNow().notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull()
 });

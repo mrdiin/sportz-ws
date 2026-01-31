@@ -88,12 +88,8 @@
           "name": "commentary_match_id_matches_id_fk",
           "tableFrom": "commentary",
           "tableTo": "matches",
-          "columnsFrom": [
-            "match_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["match_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -187,11 +183,7 @@
     "public.match_status": {
       "name": "match_status",
       "schema": "public",
-      "values": [
-        "scheduled",
-        "live",
-        "finished"
-      ]
+      "values": ["scheduled", "live", "finished"]
     }
   },
   "schemas": {},
