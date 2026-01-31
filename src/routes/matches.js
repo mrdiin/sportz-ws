@@ -29,13 +29,14 @@ matchRouter.get('/', async (req, res) => {
 
 matchRouter.post('/', async (req, res) => {
   const parsed = createMatchSchema.safeParse(req.body);
-  const {
-    data: { startTime, endTime, homeScore, awayScore }
-  } = parsed;
 
   if (!parsed.success) {
     return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid request body', details: parsed.error.issues });
   }
+
+  const {
+    data: { startTime, endTime, homeScore, awayScore }
+  } = parsed;
 
   try {
     const [event] = await db

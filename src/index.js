@@ -3,7 +3,6 @@ import express from 'express';
 import { matchRouter } from './routes/matches.js';
 
 const app = express();
-app.set('trust proxy', true);
 const PORT = process.env.PORT;
 
 // Middleware to parse JSON bodies
