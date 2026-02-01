@@ -1,16 +1,85 @@
 import { WebSocket, WebSocketServer } from 'ws';
 import { wsArcjet } from '../arcjet.js';
 
+const matchSubscribers = new Map();
+
+function subscribeToMatch(matchId, socket) {
+  if (!matchSubscribers.has(matchId)) {
+    matchSubscribers.set(matchId, new Set());
+  }
+  matchSubscribers.get(matchId).add(socket);
+}
+
+function unsubscribeFromMatch(matchId, socket) {
+  const subscribers = matchSubscribers.get(matchId);
+  if (!subscribers) {
+    return;
+  }
+  subscribers.delete(socket);
+  if (subscribers.size === 0) {
+    matchSubscribers.delete(matchId);
+  }
+}
+
+function cleanupSubscriptions(socket) {
+  for (const matchId of socket.subscriptions) {
+    unsubscribeFromMatch(matchId, socket);
+  }
+}
+
+function broadcastToMatch(matchId, payload) {
+  const subscribers = matchSubscribers.get(matchId);
+  if (!subscribers || subscribers.size === 0) {
+    return;
+  }
+  subscribers.forEach((socket) => {
+    if (socket.readyState !== WebSocket.OPEN) return;
+    socket.send(JSON.stringify(payload));
+  });
+}
+
 function sendJson(socket, payload) {
   if (socket.readyState !== WebSocket.OPEN) return;
   socket.send(JSON.stringify(payload));
 }
 
-function broadcast(wss, payload) {
+function broadcastToAll(wss, payload) {
   wss.clients.forEach((client) => {
     if (client.readyState !== WebSocket.OPEN) return;
     client.send(JSON.stringify(payload));
   });
+}
+
+function handleMessage(socket, data) {
+  let message;
+  try {
+    message = JSON.parse(data.toString());
+  } catch (e) {
+    sendJson(socket, { type: 'error', data: 'Invalid JSON' });
+    return;
+  }
+
+  const matchId = message?.matchId !== undefined ? parseInt(message.matchId, 10) : null;
+
+  if (message?.type === 'subscribe') {
+    if (isNaN(matchId)) {
+      sendJson(socket, { type: 'error', data: 'Invalid matchId' });
+      return;
+    }
+    subscribeToMatch(matchId, socket);
+    socket.subscriptions.add(matchId);
+    sendJson(socket, { type: 'subscribed', matchId });
+  }
+
+  if (message?.type === 'unsubscribe') {
+    if (isNaN(matchId)) {
+      sendJson(socket, { type: 'error', data: 'Invalid matchId' });
+      return;
+    }
+    unsubscribeFromMatch(matchId, socket);
+    socket.subscriptions.delete(matchId);
+    sendJson(socket, { type: 'unsubscribed', matchId });
+  }
 }
 
 export function attachWebSocketServer(server) {
