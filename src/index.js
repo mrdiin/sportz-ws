@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import http from 'http';
 import { securityMiddleware } from './arcjet.js';
+import { commentaryRouter } from './routes/commentary.js';
 import { matchRouter } from './routes/matches.js';
 import { attachWebSocketServer } from './ws/server.js';
 
@@ -26,10 +27,12 @@ app.get('/', (req, res) => {
 
 // API routes
 app.use('/api/v1/matches', matchRouter);
+app.use('/api/v1/matches/:id/commentary', commentaryRouter);
 
 // WebSocket server
-const { broadcastMatchCreated } = attachWebSocketServer(server);
+const { broadcastMatchCreated, broadcastCommentary } = attachWebSocketServer(server);
 app.locals.broadcastMatchCreated = broadcastMatchCreated;
+app.locals.broadcastCommentary = broadcastCommentary;
 
 // Start the server
 server.listen(PORT, HOST, () => {
