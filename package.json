@@ -12,12 +12,18 @@
     "db:studio": "drizzle-kit studio",
     "db:demo": "tsx src/db/db-demo.js"
   },
+  "nodemonConfig": {
+    "ignore": [
+      "apminsightdata/*"
+    ]
+  },
   "keywords": [],
   "license": "ISC",
   "type": "module",
   "dependencies": {
     "@arcjet/inspect": "^1.0.0",
     "@arcjet/node": "^1.0.0",
+    "apminsight": "^5.2.1",
     "dotenv": "^17.2.3",
     "drizzle-orm": "^0.45.1",
     "express": "^5.2.1",
