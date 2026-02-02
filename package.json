@@ -10,7 +10,8 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
-    "db:demo": "tsx src/db/db-demo.js"
+    "db:demo": "tsx src/db/db-demo.js",
+    "seed": "node src/seed/seed.js"
   },
   "nodemonConfig": {
     "ignore": [

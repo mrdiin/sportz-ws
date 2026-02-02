@@ -142,3 +142,4 @@ vite.config.ts.timestamp-*
 
 apminsightdata
 apminsightnode.json
+src/data/
